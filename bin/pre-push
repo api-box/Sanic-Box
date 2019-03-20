@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+isort --recursive --check-only box tests
+if [ $? -ne 0 ]; then
+  echo "[!] isort failed! Run 'isort -rc -y box tests'"
+  exit 1
+fi
+echo "[+] isort success!"
+
+black -S -l 79 --check box tests
+if [ $? -ne 0 ]; then
+  echo "[!] black failed! Run 'black -S -l 79 box tests'"
+  exit 1
+fi
+echo "[+] black success!"
+
+pylint box
+if [ $? -ne 0 ]; then
+  echo "[!] pylint failed! Please fix code before push"
+  exit 1
+fi
+echo "[+] pylint success!"
+
+mypy box
+if [ $? -ne 0 ]; then
+  echo "[!] mypy failed! Please fix code before push"
+  exit 1
+fi
+echo "[+] mypy success!"
+
+exit 0
