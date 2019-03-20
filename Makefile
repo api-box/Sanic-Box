@@ -1,20 +1,16 @@
-.PHONY: init check format test coverage htmlcov
+.PHONY: init check test coverage htmlcov
 
 init:
 	pip install -r requirements.txt
 	pip install -r requirements-dev.txt
 
 check:
-	isort --recursive --check-only box tests
+	flake8 rainmq --import-order-style=smarkets --max-complexity 12 max-line-length=79
 	black -S -l 79 --check box tests
-	pylint box
 	mypy box
 
-format:
-	isort -rc -y box tests
-	black -S -l 79 box tests
-
 test:
+	make check
 	python -m pytest
 
 coverage:
